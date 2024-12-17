@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    ports:
+      - "5050:5000"
+    command: npm run dev
+    volumes:
+      - ./server/src/:/app/src/
+    networks:
+      - quest-3
+
+  mongodb:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    networks:
+      - quest-3
+
+  client:
+    build: ./client
+    ports:
+      - "8080:5173"
+    command: npm run dev
+    volumes:
+      - ./client/src/:/app/src/
+
+    environment:
+      - WDS_SOCKET_HOST=127.0.0.1
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    networks:
+      - quest-3
+
+networks:
+  quest-3:
+    driver: bridge

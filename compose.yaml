@@ -1,0 +1,4 @@
+services:
+    app:
+        image: charlotter678/hello-app
+        
